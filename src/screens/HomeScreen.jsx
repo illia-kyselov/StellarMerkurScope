@@ -164,18 +164,15 @@ const HomeScreen = () => {
                         <View style={styles.observationsList}>
                             {observations.map((obs, index) => (
                                 <TouchableOpacity
+                                    key={obs.id}
                                     style={[styles.observationCard, index !== observations.length - 1 && { marginBottom: 4 }]}
                                     onPress={() => navigation.navigate('ObservationDetail', { obsId: obs.id })}
                                 >
                                     <View style={styles.classificationContainer}>
-                                        <Text style={styles.classificationText}>
-                                            {obs.classification}
-                                        </Text>
+                                        <Text style={styles.classificationText}>{obs.classification}</Text>
                                     </View>
                                     <View style={styles.observationHeader}>
-                                        <Text style={styles.observationObject}>
-                                            {obs.objectOfObservation}
-                                        </Text>
+                                        <Text style={styles.observationObject}>{obs.objectOfObservation}</Text>
                                         <Text style={styles.observationDate}>
                                             {obs.date.day} {obs.date.month}, {obs.date.year}
                                         </Text>

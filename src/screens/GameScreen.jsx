@@ -1,4 +1,3 @@
-// GameScreen.js
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -15,18 +14,15 @@ export default function GameScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
-                {/* Заголовок */}
                 <Text style={styles.title}>Find a constellation</Text>
 
-                {/* Изображение человека */}
                 <Image
                     source={require('../assets/settings/manImage.png')}
                     style={styles.manImage}
                     resizeMode="contain"
                 />
 
-                {/* Кнопка play */}
-                + <TouchableOpacity style={styles.playButton} onPress={() => navigation.navigate('GameLevel')}>
+                <TouchableOpacity style={styles.playButton} onPress={() => navigation.navigate('GameLevel')}>
                     <Image
                         source={require('../assets/game/play.png')}
                         style={styles.playIcon}

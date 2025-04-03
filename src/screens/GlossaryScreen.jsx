@@ -12,18 +12,15 @@ export default function GlossaryScreen() {
         <SafeAreaView style={styles.container}>
             <ScrollView
                 style={styles.scrollContainer}
-                contentContainerStyle={{ paddingBottom: 100 }} // Увеличили нижний отступ
+                contentContainerStyle={{ paddingBottom: 100 }} 
             >
-                {/* Заголовок страницы */}
                 <Text style={[styles.pageTitle, styles.mb16]}>Glossary &amp; handbook</Text>
 
-                {/* Object of the Day */}
                 <Text style={[styles.sectionTitle, styles.mb2]}>🌟 Object of the Day</Text>
                 <View style={[styles.card, styles.mb16]}>
                     <Text style={[styles.objectTitle, styles.mb4]}>
                         Andromeda Galaxy (M31)
                     </Text>
-                    {/* Список как точки */}
                     <Text style={styles.listItem}>• Type: Spiral galaxy.</Text>
                     <Text style={styles.listItem}>• Distance: 2.5 million light-years.</Text>
                     <Text style={styles.listItem}>
@@ -31,14 +28,12 @@ export default function GlossaryScreen() {
                     </Text>
                 </View>
 
-                {/* Celestial Mechanics */}
                 <View style={[styles.card, styles.mb6]}>
                     <Text style={[styles.bigSectionTitle, styles.mb8]}>Celestial Mechanics</Text>
                     <Text style={[styles.subTextItalic, styles.mb16]}>
                         The science of how celestial bodies move under the influence of gravity.
                     </Text>
 
-                    {/* Orbital Resonance */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Orbital Resonance 🔄
                     </Text>
@@ -50,7 +45,6 @@ export default function GlossaryScreen() {
                         Explains the stability of the Kuiper Belt and planetary satellite systems.
                     </Text>
 
-                    {/* Barycenter */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Barycenter ⚖️
                     </Text>
@@ -63,14 +57,12 @@ export default function GlossaryScreen() {
                     </Text>
                 </View>
 
-                {/* Types of Telescopes */}
                 <View style={[styles.card, styles.mb6]}>
                     <Text style={[styles.bigSectionTitle, styles.mb8]}>Types of Telescopes</Text>
                     <Text style={[styles.subTextItalic, styles.mb16]}>
                         From Galileo’s lenses to radio waves: revealing the invisible.
                     </Text>
 
-                    {/* Refractor (Lens-Based) */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Refractor (Lens-Based) 🔭
                     </Text>
@@ -81,7 +73,6 @@ export default function GlossaryScreen() {
                         Best For: Beginners, lunar craters, Saturn’s rings.
                     </Text>
 
-                    {/* Reflector (Mirror-Based) */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Reflector (Mirror-Based) 🌠
                     </Text>
@@ -92,7 +83,6 @@ export default function GlossaryScreen() {
                         Famous Models: Hubble Space Telescope, Dobsonian telescopes.
                     </Text>
 
-                    {/* Radio Telescope */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Radio Telescope 📡
                     </Text>
@@ -102,7 +92,6 @@ export default function GlossaryScreen() {
                         Fact: The first pulsar was discovered via radio waves (1967).
                     </Text>
 
-                    {/* Space Telescope */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Space Telescope 🛰️
                     </Text>
@@ -114,14 +103,12 @@ export default function GlossaryScreen() {
                     </Text>
                 </View>
 
-                {/* Observational Methods */}
                 <View style={styles.card}>
                     <Text style={[styles.bigSectionTitle, styles.mb8]}>Observational Methods</Text>
                     <Text style={[styles.subTextItalic, styles.mb16]}>
                         How astronomers "see" the invisible.
                     </Text>
 
-                    {/* Astrometry */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Astrometry 📏
                     </Text>
@@ -130,7 +117,6 @@ export default function GlossaryScreen() {
                         Discovery: Detected Sirius’s companion white dwarf via its motion (19th century).
                     </Text>
 
-                    {/* Photometry */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Photometry 💡
                     </Text>
@@ -139,7 +125,6 @@ export default function GlossaryScreen() {
                         Example: Transit method for finding exoplanets (e.g., TRAPPIST-1 system).
                     </Text>
 
-                    {/* Spectroscopy */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Spectroscopy 🌈
                     </Text>
@@ -150,7 +135,6 @@ export default function GlossaryScreen() {
                         Application: Analyzing exoplanet atmospheres.
                     </Text>
 
-                    {/* Interferometry */}
                     <Text style={[styles.itemTitle, styles.mb6]}>
                         • Interferometry 🔄
                     </Text>

@@ -431,14 +431,12 @@ const level10 = {
 const levels = [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10];
 
 const initialState = {
-    levels,
-    currentLevelIndex: 1,
-    connectedIndices: [],
+    levels: [level1, level2, level3, level4, level5, level6, level7, level8, level9, level10], // ✅
+    currentLevelIndex: 3,
+    status: 'idle',
     frontChain: [],
     backChain: [],
-    currentLineIndex: 0,
-    lineProgress: 0,
-    status: 'idle'
+    multiProgress: null
 };
 
 const levelsSlice = createSlice({
@@ -448,89 +446,153 @@ const levelsSlice = createSlice({
         starSelected: (state, action) => {
             const index = action.payload;
             const currentLevel = state.levels[state.currentLevelIndex];
-            if (Array.isArray(currentLevel.correctSequence[0])) {
-                const curLine = state.currentLineIndex;
-                const correctLine = currentLevel.correctSequence[curLine];
-                if (index === correctLine[state.lineProgress]) {
-                    state.lineProgress++;
-                    if (state.lineProgress === correctLine.length) {
-                        state.currentLineIndex++;
-                        state.lineProgress = 0;
-                        if (state.currentLineIndex === currentLevel.correctSequence.length) {
-                            state.status = 'passed';
+            const cs = currentLevel.correctSequence;
+
+            if (Array.isArray(cs[0])) {
+                // Multiline logic
+                if (!state.multiProgress) {
+                    state.multiProgress = cs.map(line => ({
+                        started: false,
+                        front: [],
+                        back: [],
+                        passed: false
+                    }));
+                }
+
+                for (let i = 0; i < cs.length; i++) {
+                    const line = cs[i];
+                    const progress = state.multiProgress[i];
+
+                    if (progress.passed) continue;
+
+                    if (!progress.started) {
+                        if (index === line[0]) {
+                            progress.front.push(0);
+                            progress.started = true;
+                            return;
+                        } else if (index === line[line.length - 1]) {
+                            progress.back.push(line.length - 1);
+                            progress.started = true;
+                            return;
                         }
+                    } else {
+                        const f = progress.front;
+                        const b = progress.back;
+
+                        if (f.length > 0 && f[f.length - 1] < line.length - 1 && index === line[f[f.length - 1] + 1]) {
+                            f.push(f[f.length - 1] + 1);
+                        } else if (b.length > 0 && b[b.length - 1] > 0 && index === line[b[b.length - 1] - 1]) {
+                            b.push(b[b.length - 1] - 1);
+                        } else {
+                            return;
+                        }
+
+                        const unique = new Set([...f, ...b]);
+                        if (unique.size === line.length) {
+                            progress.passed = true;
+
+                            if (state.multiProgress.every(l => l.passed)) {
+                                state.status = 'passed';
+                            }
+                        }
+
+                        return;
                     }
+                }
+
+                return;
+            }
+
+            // Single-line
+            if (state.frontChain.length === 0 && state.backChain.length === 0) {
+                if (index === cs[0]) {
+                    state.frontChain.push(0);
+                } else if (index === cs[cs.length - 1]) {
+                    state.backChain.push(cs.length - 1);
+                }
+            } else if (state.frontChain.length > 0 && state.backChain.length === 0) {
+                const frontPos = state.frontChain[state.frontChain.length - 1];
+                if (frontPos < cs.length - 1 && index === cs[frontPos + 1]) {
+                    state.frontChain.push(frontPos + 1);
+                }
+            } else if (state.backChain.length > 0 && state.frontChain.length === 0) {
+                const backPos = state.backChain[state.backChain.length - 1];
+                if (backPos > 0 && index === cs[backPos - 1]) {
+                    state.backChain.push(backPos - 1);
                 }
             } else {
-                const cs = currentLevel.correctSequence;
-                if (state.frontChain.length === 0 && state.backChain.length === 0) {
-                    if (index === cs[0]) {
-                        state.frontChain.push(0);
-                    } else if (index === cs[cs.length - 1]) {
-                        state.backChain.push(cs.length - 1);
-                    }
-                } else if (state.frontChain.length > 0 && state.backChain.length === 0) {
-                    let frontPos = state.frontChain[state.frontChain.length - 1];
-                    if (frontPos < cs.length - 1 && index === cs[frontPos + 1]) {
-                        state.frontChain.push(frontPos + 1);
-                    } else if (state.frontChain[0] > 0 && index === cs[0]) {
-                        state.frontChain.unshift(0);
-                    } else if (index === cs[cs.length - 1]) {
-                        state.backChain.push(cs.length - 1);
-                    }
-                } else if (state.backChain.length > 0 && state.frontChain.length === 0) {
-                    let backPos = state.backChain[state.backChain.length - 1];
-                    if (backPos > 0 && index === cs[backPos - 1]) {
-                        state.backChain.push(backPos - 1);
-                    } else if (state.backChain[0] < cs.length - 1 && index === cs[cs.length - 1]) {
-                        state.backChain.unshift(cs.length - 1);
-                    } else if (index === cs[0]) {
-                        state.frontChain.push(0);
-                    }
-                } else if (state.frontChain.length > 0 && state.backChain.length > 0) {
-                    let frontPos = state.frontChain[state.frontChain.length - 1];
-                    let backPos = state.backChain[state.backChain.length - 1];
-                    if (frontPos < cs.length - 1 && index === cs[frontPos + 1]) {
-                        state.frontChain.push(frontPos + 1);
-                    } else if (backPos > 0 && index === cs[backPos - 1]) {
-                        state.backChain.push(backPos - 1);
-                    }
-                }
-                if (state.frontChain.length + state.backChain.length >= cs.length) {
-                    state.status = 'passed';
+                const frontPos = state.frontChain[state.frontChain.length - 1];
+                const backPos = state.backChain[state.backChain.length - 1];
+                if (frontPos < cs.length - 1 && index === cs[frontPos + 1]) {
+                    state.frontChain.push(frontPos + 1);
+                } else if (backPos > 0 && index === cs[backPos - 1]) {
+                    state.backChain.push(backPos - 1);
                 }
             }
+
+            const totalUnique = new Set([
+                ...state.frontChain.map(i => cs[i]),
+                ...state.backChain.map(i => cs[i])
+            ]);
+
+            if (totalUnique.size === cs.length) {
+                state.status = 'passed';
+            }
         },
+
         resetLevel: (state) => {
             const currentLevel = state.levels[state.currentLevelIndex];
-            if (Array.isArray(currentLevel.correctSequence[0])) {
-                state.currentLineIndex = 0;
-                state.lineProgress = 0;
-            } else {
-                state.frontChain = [];
-                state.backChain = [];
-            }
             state.status = 'idle';
+            state.frontChain = [];
+            state.backChain = [];
+            state.multiProgress = Array.isArray(currentLevel.correctSequence[0])
+                ? currentLevel.correctSequence.map(() => ({
+                    started: false,
+                    front: [],
+                    back: [],
+                    passed: false
+                }))
+                : null;
         },
+
         nextLevel: (state) => {
             if (state.currentLevelIndex < state.levels.length - 1) {
                 state.currentLevelIndex++;
                 const currentLevel = state.levels[state.currentLevelIndex];
-                if (Array.isArray(currentLevel.correctSequence[0])) {
-                    state.currentLineIndex = 0;
-                    state.lineProgress = 0;
-                } else {
-                    state.frontChain = [];
-                    state.backChain = [];
-                }
                 state.status = 'idle';
+                state.frontChain = [];
+                state.backChain = [];
+                state.multiProgress = Array.isArray(currentLevel.correctSequence[0])
+                    ? currentLevel.correctSequence.map(() => ({
+                        started: false,
+                        front: [],
+                        back: [],
+                        passed: false
+                    }))
+                    : null;
             }
         },
+
+        resetAll: (state) => {
+            state.currentLevelIndex = 0;
+            state.status = 'idle';
+            state.frontChain = [];
+            state.backChain = [];
+            state.multiProgress = null;
+        },
+
         setStatus: (state, action) => {
             state.status = action.payload;
         }
     }
 });
 
-export const { starSelected, resetLevel, nextLevel, setStatus } = levelsSlice.actions;
+export const {
+    starSelected,
+    resetLevel,
+    nextLevel,
+    resetAll,
+    setStatus
+} = levelsSlice.actions;
+
 export default levelsSlice.reducer;

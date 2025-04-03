@@ -19,6 +19,8 @@ import PictureSVG from '../assets/game/PictureSVG';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 import { addObservation } from '../store/slices/observationsSlice';
+import { updateObservation } from '../store/slices/observationsSlice';
+import { useRoute } from '@react-navigation/native';
 
 const CLASSIFICATION_OPTIONS = ['Planets 🪐', 'Stars ✨', 'Galaxies 🌌'];
 const WEATHER_OPTIONS = [
@@ -48,6 +50,9 @@ export default function AddObservationScreen() {
         fog: false,
         thunderstorm: false
     });
+    const route = useRoute();
+    const { observation, isEditing } = route.params || {};
+
 
     useEffect(() => {
         (async () => {
@@ -59,6 +64,20 @@ export default function AddObservationScreen() {
             }
         })();
     }, []);
+
+    useEffect(() => {
+        if (isEditing && observation) {
+            const { date, classification, objectOfObservation, coordinates, notes, weather, images } = observation;
+
+            setObservationDate(new Date(`${date.month} ${date.day}, ${date.year}`));
+            setClassification(classification);
+            setObjectOfObservation(objectOfObservation);
+            setCoordinates(coordinates);
+            setNotes(notes);
+            setWeather(weather);
+            setImages(images ?? []);
+        }
+    }, [isEditing, observation]);
 
     const handleDateChange = (event, selectedDate) => {
         if (selectedDate) {
@@ -117,6 +136,7 @@ export default function AddObservationScreen() {
 
     const handleSave = () => {
         if (!allRequiredFilled) return;
+
         const day = observationDate.getDate();
         const monthIndex = observationDate.getMonth();
         const year = observationDate.getFullYear();
@@ -124,8 +144,9 @@ export default function AddObservationScreen() {
             'January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
         ];
+
         const newObservation = {
-            id: Date.now(),
+            id: isEditing && observation ? observation.id : Date.now(),
             date: {
                 day,
                 month: MONTHS[monthIndex],
@@ -138,7 +159,13 @@ export default function AddObservationScreen() {
             weather,
             images
         };
-        dispatch(addObservation(newObservation));
+
+        if (isEditing) {
+            dispatch(updateObservation(newObservation));
+        } else {
+            dispatch(addObservation(newObservation));
+        }
+
         navigation.goBack();
     };
 
@@ -247,7 +274,7 @@ export default function AddObservationScreen() {
                     })}
                 </View>
                 <CustomButton
-                    label="Add observation"
+                    label={isEditing ? "Save changes" : "Add observation"}
                     onPress={handleSave}
                     disabled={!allRequiredFilled}
                     containerStyle={{ marginTop: 18 }}

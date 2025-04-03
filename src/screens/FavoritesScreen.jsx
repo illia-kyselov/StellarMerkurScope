@@ -1,5 +1,3 @@
-// FavoritesScreen.js
-
 import React from 'react';
 import {
     View,
@@ -14,26 +12,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { toggleLike } from '../store/slices/eventsSlice';
 import BackButtonSVG from '../assets/settings/BackButtonSVG';
-import EventCard from '../components/EventCard'; // Используем вынесенную карточку
+import EventCard from '../components/EventCard';
 
 const FavoritesScreen = () => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    // Получаем все события из Redux
     const events = useSelector((state) => state.events.events);
 
-    // Фильтруем только лайкнутые события
     const likedEvents = events.filter((event) => event.isLiked);
 
-    // Функция для отмены лайка
     const handleToggleLike = (id) => {
         dispatch(toggleLike({ id }));
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            {/* Фиксированная шапка */}
             <View style={styles.headerContainer}>
                 <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
                     <BackButtonSVG />
@@ -41,7 +35,6 @@ const FavoritesScreen = () => {
                 <Text style={styles.headerTitle}>Favorites</Text>
             </View>
 
-            {/* Контейнер с контентом. Отступ от шапки: 54, если пусто, и 18, если есть данные */}
             <View
                 style={[
                     styles.contentContainer,
@@ -88,10 +81,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingTop: 16,
         paddingBottom: 12,
-        paddingHorizontal: 20, // Добавлено для отступов по горизонтали
+        paddingHorizontal: 20,
     },
     backButton: {
-        marginRight: 18, // Отступ справа от кнопки назад
+        marginRight: 18,
     },
     headerTitle: {
         fontFamily: 'TT Travels',
@@ -101,7 +94,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        paddingHorizontal: 20, // Отступы для контента
+        paddingHorizontal: 20,
     },
     emptyStateContainer: {
         alignItems: 'center',

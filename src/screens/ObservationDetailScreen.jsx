@@ -1,4 +1,3 @@
-// ObservationDetailScreen.js
 import React from 'react';
 import {
     View,
@@ -54,7 +53,10 @@ export default function ObservationDetailScreen() {
     };
 
     const handleEdit = () => {
-        alert('Edit observation (not implemented)');
+        navigation.navigate('AddObservation', {
+            observation,
+            isEditing: true
+        });
     };
 
     const {

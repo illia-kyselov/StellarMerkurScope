@@ -1,24 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    observations: [
-        {
-            id: 1,
-            date: { day: 17, month: 'August', year: 2025 },
-            classification: 'Planets',
-            objectOfObservation: 'Mars',
-            coordinates: '14h 29m 36s, -62° 40′ 46″',
-            notes: 'Test observation of Mars',
-            weather: {
-                clearly: true,
-                cloudy: false,
-                rain: false,
-                snow: false,
-                fog: false,
-                thunderstorm: false
-            }
-        }
-    ]
+    observations: []
 };
 
 const observationsSlice = createSlice({
