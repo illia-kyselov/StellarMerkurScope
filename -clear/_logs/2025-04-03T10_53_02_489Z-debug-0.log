@@ -1,0 +1,18 @@
+0 verbose cli C:\nvm4w\nodejs\node.exe C:\nvm4w\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@10.9.2
+2 info using node@v23.9.0
+3 silly config load:file:C:\Users\illya\AppData\Local\nvm\v23.9.0\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\illya\Desktop\StellarMerkurScope\.npmrc
+5 silly config load:file:C:\Users\illya\.npmrc
+6 silly config load:file:C:\Users\illya\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm strat
+8 verbose argv "strat" "--cache" "-clear"
+9 verbose logfile logs-max:10 dir:C:\Users\illya\Desktop\StellarMerkurScope\-clear\_logs\2025-04-03T10_53_02_489Z-
+10 verbose logfile C:\Users\illya\Desktop\StellarMerkurScope\-clear\_logs\2025-04-03T10_53_02_489Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd C:\Users\illya\Desktop\StellarMerkurScope
+13 verbose os Windows_NT 10.0.19045
+14 verbose node v23.9.0
+15 verbose npm  v10.9.2
+16 verbose exit 1
+17 verbose code 1
